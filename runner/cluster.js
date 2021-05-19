@@ -13,34 +13,38 @@ const Recaptcha = require('puppeteer-extra-plugin-recaptcha');
   const cluster = await Cluster.launch({
     puppeteer,
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: 5,
+    maxConcurrency: 8,
     timeout: 20000,
     puppeteerOptions: {
       args: [
-
+        '--proxy-server=http://104.131.127.222:50000',
         '--incognito',
         '--no-sandbox',
       ],
-      headless: true,
+      headless: false,
     },
   });
 
   // Define a task
   let i = 0;
   await cluster.task(async ({ page, data: url }) => {
-      i++;
+    i++;
     page.setExtraHTTPHeaders({ referer: 'https://pangeamovement.com' });
     console.log('i', i);
+    await page.setUserAgent(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15'
+    ); // like this
     await page.goto(url);
     await page.waitForSelector(
       '#root > div > div.d-none.d-md-flex.flex-column.flex-grow-1 > div.d-flex.flex-column.flex-grow-1.pe-2 > div > div.d-flex.flex-column.flex-grow-1.ps-2.pt-2.lh-1 > div.d-flex.align-items-start.flex-wrap > div.mt-1.ps-2.d-flex.align-items-center.flex-grow-1 > div > div.d-flex.flex-wrap > div > h1'
     );
-    await delay(3000);
+    await delay(6000);
   });
 
   // Add some pages to queue
   for (let u = 0; u < 10000; u++) {
     cluster.queue(
+      //   'https://www.whatismyreferer.com/'
       'https://poocoin.app/tokens/0x123f92226c626adc919ad122d6cc3c20a6c25666'
     );
   }
