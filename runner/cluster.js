@@ -21,7 +21,7 @@ const Recaptcha = require('puppeteer-extra-plugin-recaptcha');
         '--incognito',
         '--no-sandbox',
       ],
-      headless: false,
+      headless: true,
     },
   });
 
