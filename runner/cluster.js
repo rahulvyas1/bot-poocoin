@@ -3,6 +3,7 @@ const vanillaPuppeteer = require('puppeteer');
 const { addExtra } = require('puppeteer-extra');
 const Stealth = require('puppeteer-extra-plugin-stealth');
 const Recaptcha = require('puppeteer-extra-plugin-recaptcha');
+const randomUseragent = require('random-useragent');
 
 (async () => {
   // Create a cluster with 2 workers
@@ -13,15 +14,15 @@ const Recaptcha = require('puppeteer-extra-plugin-recaptcha');
   const cluster = await Cluster.launch({
     puppeteer,
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: 8,
+    maxConcurrency: 1,
     timeout: 20000,
     puppeteerOptions: {
       args: [
-        '--proxy-server=http://104.131.127.222:50000',
+        // '--proxy-server=http://104.131.127.222:50000',
         '--incognito',
         '--no-sandbox',
       ],
-      headless: true,
+      headless: false,
     },
   });
 
@@ -32,7 +33,7 @@ const Recaptcha = require('puppeteer-extra-plugin-recaptcha');
     page.setExtraHTTPHeaders({ referer: 'https://pangeamovement.com' });
     console.log('i', i);
     await page.setUserAgent(
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15'
+        randomUseragent.getRandom()
     ); // like this
     await page.goto(url);
     await page.waitForSelector(
