@@ -22,7 +22,7 @@ const randomUseragent = require('random-useragent');
         '--incognito',
         '--no-sandbox',
       ],
-      headless: false,
+      headless: true,
     },
   });
 
