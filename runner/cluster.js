@@ -14,11 +14,11 @@ const randomUseragent = require('random-useragent');
   const cluster = await Cluster.launch({
     puppeteer,
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: 1,
+    maxConcurrency: 8,
     timeout: 20000,
     puppeteerOptions: {
       args: [
-        // '--proxy-server=http://104.131.127.222:50000',
+        '--proxy-server=http://104.131.127.222:50000',
         '--incognito',
         '--no-sandbox',
       ],
